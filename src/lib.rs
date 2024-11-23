@@ -39,12 +39,6 @@ pub enum DiscoveryError {
     UnknownProvider(String),
 }
 
-impl std::fmt::Display for DiscoveryError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self)
-    }
-}
-
 #[derive(Debug, Deserialize, Clone, PartialEq, Eq)]
 pub struct Node {
     pub address: String,

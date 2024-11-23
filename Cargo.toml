@@ -20,6 +20,6 @@ aws-config = { version = "1.0", features = ["behavior-version-latest"], optional
 aws-sdk-ec2 = { version = "1.0", optional = true }
 
 [features]
-default = ["aws"]
+default = []
 aws = ["aws-config", "aws-sdk-ec2"]
 all = ["aws"]
