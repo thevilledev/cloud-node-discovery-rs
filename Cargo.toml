@@ -7,7 +7,7 @@ authors = ["Ville Vesilehto <ville@vesilehto.fi>"]
 description = "Cloud node discovery library"
 repository = "https://github.com/thevilledev/cloud-node-discovery-rs"
 documentation = "https://docs.rs/cloud-node-discovery"
-categories = ["api-bindings", "network-programming", "cloud"]
+categories = ["api-bindings", "network-programming"]
 
 [dependencies]
 async-trait = "0.1"
