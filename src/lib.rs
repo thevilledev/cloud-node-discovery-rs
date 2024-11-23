@@ -1,3 +1,24 @@
+//! Cloud Node Discovery for Rust
+//!
+//! This crate provides functionality to discover nodes in various cloud environments.
+//! Currently supports:
+//!
+//! - AWS EC2 instances (with tag-based filtering)
+//!
+//! # Example
+//!
+//! ```rust
+//! use cloud_node_discovery::{Discovery, DiscoveryError};
+//!
+//! #[tokio::main]
+//! async fn main() -> Result<(), DiscoveryError> {
+//!     let discovery = Discovery::new("aws", "region=us-east-1,tag_key=foo,tag_value=bar").await?;
+//!     let nodes = discovery.discover().await?;
+//!     println!("{:?}", nodes);
+//!     Ok(())
+//! }
+//! ```
+//!
 use async_trait::async_trait;
 use serde::Deserialize;
 use std::collections::HashMap;
@@ -18,7 +39,13 @@ pub enum DiscoveryError {
     UnknownProvider(String),
 }
 
-#[derive(Debug, Deserialize)]
+impl std::fmt::Display for DiscoveryError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
+}
+
+#[derive(Debug, Deserialize, Clone, PartialEq, Eq)]
 pub struct Node {
     pub address: String,
     pub meta: HashMap<String, String>,
@@ -48,5 +75,36 @@ impl Discovery {
 
     pub async fn discover(&self) -> Result<Vec<Node>, DiscoveryError> {
         self.provider.discover().await
+    }
+}
+
+pub struct DiscoveryBuilder {
+    provider_name: String,
+    config: HashMap<String, String>,
+}
+
+impl DiscoveryBuilder {
+    pub fn new(provider_name: &str) -> Self {
+        Self {
+            provider_name: provider_name.to_string(),
+            config: HashMap::new(),
+        }
+    }
+
+    pub fn with_config(mut self, key: &str, value: &str) -> Self {
+        self.config.insert(key.to_string(), value.to_string());
+        self
+    }
+
+    pub async fn build(self) -> Result<Discovery, DiscoveryError> {
+        Discovery::new(&self.provider_name, &self.config_to_string()).await
+    }
+
+    fn config_to_string(&self) -> String {
+        self.config
+            .iter()
+            .map(|(k, v)| format!("{}={}", k, v))
+            .collect::<Vec<_>>()
+            .join(",")
     }
 }
