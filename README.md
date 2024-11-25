@@ -14,11 +14,13 @@ Work in progress.
 - By default, no providers are enabled.
 - Supported providers:
   - AWS
+  - UpCloud
 
 ## Example
 
 ```bash
 cargo run --example aws
+cargo run --example upcloud
 ```
 
 See the [examples](examples) directory for more.

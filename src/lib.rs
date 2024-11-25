@@ -61,6 +61,8 @@ impl Discovery {
         let provider: Box<dyn Provider> = match provider_name {
             #[cfg(feature = "aws")]
             "aws" => Box::new(providers::aws::AwsProvider::new(&config).await?),
+            #[cfg(feature = "upcloud")]
+            "upcloud" => Box::new(providers::upcloud::UpcloudProvider::new(&config).await?),
             _ => return Err(DiscoveryError::UnknownProvider(provider_name.to_string())),
         };
 
