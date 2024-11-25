@@ -13,9 +13,9 @@ async fn main() -> Result<(), DiscoveryError> {
     Ok(())
 }
 
-// Add this fallback main function for when FFI is disabled
+
 #[cfg(not(feature = "aws"))]
 fn main() {
     println!("This example requires the 'aws' feature to be enabled.");
-    println!("Please run with: cargo run --feature aws");
+    println!("Please run with: cargo run --example aws --features aws");
 }
