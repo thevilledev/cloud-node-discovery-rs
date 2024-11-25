@@ -11,7 +11,7 @@ Work in progress.
 ## Features
 
 - Providers are supported via features. You don't have to enable them all.
-- By default, no providers are enabled.
+- By default, all providers are enabled.
 - Supported providers:
   - AWS
   - UpCloud
